@@ -15,6 +15,9 @@ jobs:
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+        path: go/src/github.com/IljaN/midi
 
     - name: Get dependencies
       run: |
@@ -23,8 +26,31 @@ jobs:
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
+      env:
+        GOPATH: /home/runner/work/IljaN/go
 
     - name: Build
       run: go build -v .
+
     - name: Test
-      run: go test -v 
+      run: go test -v
+      env:
+        GOPATH: /home/runner/work/IljaN/go
+
+    - name: Debug
+      run: |
+        pwd
+        echo ${HOME}
+        echo ${GITHUB_WORKSPACE}
+        echo ${GOPATH}
+        echo ${GOROOT}
+      env:
+        GOPATH: /home/runner/work/IljaN/go
+
+    - name: Coverage
+      run: |
+        go install github.com/mattn/goveralls
+        /home/runner/work/IljaN/go/bin/goveralls -repotoken  ${COVERALS_TOKEN} -service=travis-ci
+      env:
+        GOPATH: /home/runner/work/IljaN/go
+        COVERALS_TOKEN: ${{secrets.COVERALS_TOKEN}}

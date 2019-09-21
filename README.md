@@ -1,4 +1,5 @@
 # midi
+[![Coverage Status](https://coveralls.io/repos/github/IljaN/midi/badge.svg?branch=HEAD)](https://coveralls.io/github/IljaN/midi?branch=HEAD)
 
 Currently only provides a master-clock which can be used to write to /dev/midi.
 
